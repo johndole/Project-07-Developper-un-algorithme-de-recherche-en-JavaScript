@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Roboto:wght@400;500;700&family=Shrikhand&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@400;500;600;700&family=Saira+Extra+Condensed:wght@100;200;300;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/22c602cd72.js"
+      crossorigin="anonymous"
+    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projet 7 OC</title>
+  </head>
+  <body>
+    <header>
+      <img class="logo" src="/assets/icons/logo.svg" alt="logo" />
+    </header>
+
+    <main>
+      <div class="hero__container">
+        <img
+          class="hero__img"
+          src="/assets/images/hero__image.jpg"
+          alt="hero-img"
+        />
+        <h1 class="hero__title">
+          CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET
+          DÉLICIEUSES
+        </h1>
+        <div class="hero__search-bar">
+          <input
+            id="search"
+            role="search"
+            class="hero__search-input"
+            type="text"
+            placeholder="Rechercher une recette, un ingrédient, ..."
+          />
+          <button class="hero__search-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="filters-container">
+        <div class="filters-dropdown">
+          <div class="custom-select" id="dropdown__ingredients">
+            <div class="dropdown">
+              <div class="dropdown-placeholder">
+                <div class="placeholder">Ingrédients</div>
+                <div class="arrow">
+                  <i class="fa-solid fa-chevron-down"></i>
+                  <i class="fa-solid fa-chevron-up"></i>
+                </div>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option-search-tags">
+                <input
+                  type="text"
+                  class="search-tags"
+                  placeholder="Rechercher un tag"
+                />
+                <button type="button" class="clear-search">
+                  <i class="fa fa-close"></i>
+                </button>
+              </div>
+              <div class="select-box">
+                <div class="selected-options"></div>
+              </div>
+              <div class="all-options"></div>
+
+              <div class="no-results-message">No result match</div>
+              <span class="tag_error_msg error">This field is required</span>
+            </div>
+          </div>
+          <div class="custom-select" id="dropdown__ustensils">
+            <div class="dropdown">
+              <div class="dropdown-placeholder">
+                <div class="placeholder">Ustensils</div>
+                <div class="arrow">
+                  <i class="fa-solid fa-chevron-down"></i>
+                  <i class="fa-solid fa-chevron-up"></i>
+                </div>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option-search-tags">
+                <input
+                  type="text"
+                  class="search-tags"
+                  placeholder="Rechercher un tag"
+                />
+                <button type="button" class="clear-search">
+                  <i class="fa fa-close"></i>
+                </button>
+              </div>
+              <div class="select-box">
+                <div class="selected-options"></div>
+              </div>
+              <div class="all-options"></div>
+
+              <div class="no-results-message">No result match</div>
+              <span class="tag_error_msg error">This field is required</span>
+            </div>
+          </div>
+          <div class="custom-select" id="dropdown__appliances">
+            <div class="dropdown">
+              <div class="dropdown-placeholder">
+                <div class="placeholder">Appareils</div>
+                <div class="arrow">
+                  <i class="fa-solid fa-chevron-down"></i>
+                  <i class="fa-solid fa-chevron-up"></i>
+                </div>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option-search-tags">
+                <input
+                  type="text"
+                  class="search-tags"
+                  placeholder="Rechercher un tag"
+                />
+                <button type="button" class="clear-search">
+                  <i class="fa fa-close"></i>
+                </button>
+              </div>
+              <div class="select-box">
+                <div class="selected-options"></div>
+              </div>
+              <div class="all-options"></div>
+
+              <div class="no-results-message">No result match</div>
+              <span class="tag_error_msg error">This field is required</span>
+            </div>
+          </div>
+        </div>
+        <p class="filters-title" id="card-count"></p>
+      </div>
+
+      <div class="filter-display-area" id="filter-display-area"></div>
+
+      <div class="recipes__cards"></div>
+    </main>
+    <script type="module" src="/src/pages/index.ts"></script>
+  </body>
+</html>
