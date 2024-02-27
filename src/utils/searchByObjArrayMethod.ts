@@ -58,8 +58,7 @@ export function initSearchByObjArrayMethod(): void {
 }
 
 /**
- * Filters card elements based on matching text content within specified child elements.
- * 
+ * Filters card elements based on matching text content within specified child elements. 
  * @param {string} input - The search term.
  * @param {NodeListOf<HTMLElement>} cards - The collection of card elements to search through.
  * @param {string[]} selectors - The CSS selectors for child elements within each card to search.
