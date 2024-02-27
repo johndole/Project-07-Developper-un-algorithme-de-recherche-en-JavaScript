@@ -6,8 +6,8 @@ import { getRecipes } from "../api/api";
 import { getIngredients } from "../api/api";
 import { getRecipeByUstensils } from "../api/api";
 import { getRecipeByAppliance } from "../api/api";
-import { initializeDropdown } from "../utils/dropdowns";
-import { initSearchByLoop } from "../utils/searchByLoop";
+import { initializeDropdown } from "../components/dropdowns";
+import { initSearchByLoop } from "../components/searchByLoop";
 
 
 const recipeDomContainer = document.querySelector(".recipes__cards");
