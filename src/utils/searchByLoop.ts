@@ -12,7 +12,7 @@ export function initSearchByLoop() {
   searchInput.addEventListener('input', () => {
     const searchTerm = searchInput.value;
     // Define the selectors for child elements to search within each card
-    const selectors = ['.card__title', '.card__description', '.card__ingredient-name']; // Add or remove selectors based on your markup
+    const selectors = ['.card__title', '.card__description', '.card__ingredient-name'];
 
     filterCardsByTextContent(searchTerm, cards as NodeListOf<HTMLElement>, selectors);
   });
