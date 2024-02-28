@@ -65,12 +65,6 @@ export const initializeDropdown = (
         searchInputElement.focus();
     });
 
-    // Event listener for the dropdown toggle
-    dropdownElement.addEventListener("click", (event) => {
-        event.stopPropagation();
-        dropdownContainer.classList.toggle("open");
-    });
-
     // Function to add a tag for a selected value
     function addTag(value: string): void {
         // Common function to create a tag element
@@ -118,4 +112,12 @@ export const initializeDropdown = (
         selectedValues = selectedValues.filter(val => val !== value);
         onSelectionChange(selectedValues);
     }
+    // Event listener for the dropdown toggle
+    dropdownElement.addEventListener("click", (event) => {
+        event.stopPropagation();
+        dropdownContainer.classList.toggle("open");
+    });
+
+
+
 };
