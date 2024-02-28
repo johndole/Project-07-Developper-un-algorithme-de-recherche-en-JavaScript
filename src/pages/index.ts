@@ -2,17 +2,17 @@
 import "../styles/main.css";
 import { Recipe } from "../models/recettes";
 import { cardRecipeTemplate } from "../templates/recettes-cards";
-import { getRecipes } from "../api/api";
-import { getIngredients } from "../api/api";
-import { getRecipeByUstensils } from "../api/api";
-import { getRecipeByAppliance } from "../api/api";
+import {
+  getRecipes,
+  getIngredients,
+  getRecipeByUstensils,
+  getRecipeByAppliance,
+} from "../api/api";
 import { initializeDropdown } from "../components/dropdowns";
 import { initSearchByLoop } from "../components/searchByLoop";
 
-
 const recipeDomContainer = document.querySelector(".recipes__cards");
 document.addEventListener("DOMContentLoaded", async () => {
-
   const recipes = await fetchData(getRecipes());
   const ingredients = await fetchData(getIngredients());
   const ustensils = await fetchData(getRecipeByUstensils());
@@ -34,22 +34,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   //Display the DOM
   displayData(recipes);
 
-
   //Initialize search
   initSearchByLoop();
 
-
   //Display dropdown
-  initializeDropdown("#dropdown__ingredients", ingredients, 'ingredient');
-  initializeDropdown("#dropdown__ustensils", ustensils, 'utensil');
-  initializeDropdown("#dropdown__appliances", appliances, 'appliance');
-
-
-
-
-
+  initializeDropdown("#dropdown__ingredients", ingredients, "ingredient");
+  initializeDropdown("#dropdown__ustensils", ustensils, "utensil");
+  initializeDropdown("#dropdown__appliances", appliances, "appliance");
 });
-
 
 function displayData(recipes: Recipe[]) {
   recipes.forEach((recipe) => {
@@ -58,4 +50,3 @@ function displayData(recipes: Recipe[]) {
     recipeDomContainer?.appendChild(recipeCardDOM);
   });
 }
-
