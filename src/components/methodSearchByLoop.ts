@@ -1,9 +1,4 @@
-/**
- * Filters cards based on matching text content in specified child elements.
- * @param {string} input - The search term.
- * @param {HTMLElement[]} cards - The array of card elements to search through.
- * @param {string[]} selectors - The selectors for child elements within each card to search.
- */
+
 
 export function initSearchByLoop() {
   const searchInput = document.querySelector('.hero__search-input') as HTMLInputElement;

@@ -41,13 +41,16 @@ export function cardRecipeTemplate(recipe: Recipe) {
     recipeDescription.textContent = description;
     recipeDescription.classList.add('card__description');
 
-    const recipeUstensils = document.createElement('span');
-    recipeUstensils.classList.add('card__ustensils');
-    recipeUstensils.setAttribute('data-utensil',  ustensils.join(', '));
+    ustensils.forEach(ustensil => {
+      const singleUstensilElement = document.createElement('span');
+      singleUstensilElement.classList.add('card__ustensil');
+      singleUstensilElement.setAttribute('data-value', ustensil.toLowerCase()); // Standardize case for easier matching
+      recipeBody.appendChild(singleUstensilElement); 
+  });
 
     const recipeAppliance = document.createElement('span');
     recipeAppliance.classList.add('card__appliance');
-    recipeAppliance.setAttribute('data-appliance', appliance);
+    recipeAppliance.setAttribute('data-value', appliance);
 
     const recipeIngredientsTitle = document.createElement('h4');
     recipeIngredientsTitle.textContent = 'Ingrédients';
@@ -63,7 +66,7 @@ export function cardRecipeTemplate(recipe: Recipe) {
       const nameSpan = document.createElement('span');
       nameSpan.textContent = ingredient.ingredient;
       nameSpan.classList.add('card__ingredient-name');
-      nameSpan.setAttribute('data-ingredient', ingredient.ingredient);
+      nameSpan.setAttribute('data-value', ingredient.ingredient);
 
       const quantitySpan = document.createElement('span');
       quantitySpan.textContent = `${ingredient.quantity || ''} ${ingredient.unit || ''}`;
@@ -87,7 +90,6 @@ export function cardRecipeTemplate(recipe: Recipe) {
     recipeBody.appendChild(recipeDescription);
     recipeBody.appendChild(recipeIngredientsTitle);
     recipeBody.appendChild(recipeIngredients);
-    recipeBody.appendChild(recipeUstensils);
     recipeBody.appendChild(recipeAppliance);
 
     return article;

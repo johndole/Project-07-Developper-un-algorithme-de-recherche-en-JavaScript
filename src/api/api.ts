@@ -47,11 +47,11 @@ export async function getRecipeByUstensils(): Promise<string[]> {
   const recipes = await response.json() as Recipe[];
   
   // Extract all utensils and ensure they're unique
-  const utensils: string[] = recipes.flatMap(recipe => recipe.ustensils);
+  const ustensils: string[] = recipes.flatMap(recipe => recipe.ustensils);
 
   // Capitalize the first letter of each utensil and ensure the rest are lowercase
-  const capitalizedUtensils = [...new Set(utensils)].map(utensil => 
-    utensil.charAt(0).toUpperCase() + utensil.slice(1).toLowerCase()
+  const capitalizedUtensils = [...new Set(ustensils)].map(ustensil => 
+    ustensil.charAt(0).toUpperCase() + ustensil.slice(1).toLowerCase()
   );
   
   return [...new Set(capitalizedUtensils)];
