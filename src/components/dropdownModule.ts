@@ -51,20 +51,6 @@ export const initializeDropdown = (
     displayDropdownItems(values);
     onSelectionChange(selectedValues);
 
-    // Event listener for the search input
-    searchInputElement.addEventListener("input", () => {
-        const searchTerm = searchInputElement.value.toLowerCase();
-        const filteredValues = values.filter(value => value.toLowerCase().includes(searchTerm));
-        displayDropdownItems(filteredValues);
-    });
-
-    // Event listener for the clear search
-    clearSearchElement.addEventListener("click", () => {
-        searchInputElement.value = "";
-        displayDropdownItems(values);
-        searchInputElement.focus();
-    });
-
     // Function to add a tag for a selected value
     function addTag(value: string): void {
         // Common function to create a tag element
@@ -112,6 +98,20 @@ export const initializeDropdown = (
         selectedValues = selectedValues.filter(val => val !== value);
         onSelectionChange(selectedValues);
     }
+
+    // Event listener for the search input
+    searchInputElement.addEventListener("input", () => {
+        const searchTerm = searchInputElement.value.toLowerCase();
+        const filteredValues = values.filter(value => value.toLowerCase().includes(searchTerm));
+        displayDropdownItems(filteredValues);
+    });
+
+    // Event listener for the clear search
+    clearSearchElement.addEventListener("click", () => {
+        searchInputElement.value = "";
+        displayDropdownItems(values);
+        searchInputElement.focus();
+    });
     // Event listener for the dropdown toggle
     dropdownElement.addEventListener("click", (event) => {
         event.stopPropagation();
