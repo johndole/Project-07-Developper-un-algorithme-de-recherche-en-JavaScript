@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initializeDropdown("#dropdown__appliances", appliances, onSelectionChange);
 });
 
-// Supposons que cette fonction est appelée chaque fois que les valeurs sélectionnées changent
+//Fonction de Rappel
 const onSelectionChange = (selectedValues: string[]) => {
   filterRecipesBySelectedValues(selectedValues);
   updateMatchCountDisplay(); // Mise à jour du compte après le filtrage
