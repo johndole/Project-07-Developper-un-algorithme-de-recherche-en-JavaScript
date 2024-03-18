@@ -1,0 +1,423 @@
+[1mdiff --git a/package.json b/package.json[m
+[1mindex da1f50e..15035b2 100644[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -4,7 +4,7 @@[m
+   "version": "0.0.0",[m
+   "type": "module",[m
+   "scripts": {[m
+[31m-    "dev": "vite",[m
+[32m+[m[32m    "dev": "vite --host",[m
+     "build": "tsc && vite build",[m
+     "preview": "vite preview"[m
+   },[m
+[1mdiff --git a/src/api/api.ts b/src/api/api.ts[m
+[1mindex 3c94231..35a000e 100644[m
+[1m--- a/src/api/api.ts[m
+[1m+++ b/src/api/api.ts[m
+[36m@@ -47,11 +47,11 @@[m [mexport async function getRecipeByUstensils(): Promise<string[]> {[m
+   const recipes = await response.json() as Recipe[];[m
+   [m
+   // Extract all utensils and ensure they're unique[m
+[31m-  const utensils: string[] = recipes.flatMap(recipe => recipe.ustensils);[m
+[32m+[m[32m  const ustensils: string[] = recipes.flatMap(recipe => recipe.ustensils);[m
+ [m
+   // Capitalize the first letter of each utensil and ensure the rest are lowercase[m
+[31m-  const capitalizedUtensils = [...new Set(utensils)].map(utensil => [m
+[31m-    utensil.charAt(0).toUpperCase() + utensil.slice(1).toLowerCase()[m
+[32m+[m[32m  const capitalizedUtensils = [...new Set(ustensils)].map(ustensil =>[m[41m [m
+[32m+[m[32m    ustensil.charAt(0).toUpperCase() + ustensil.slice(1).toLowerCase()[m
+   );[m
+   [m
+   return [...new Set(capitalizedUtensils)];[m
+[1mdiff --git a/src/components/dropdownModule.ts b/src/components/dropdownModule.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..edd5cda[m
+[1m--- /dev/null[m
+[1m+++ b/src/components/dropdownModule.ts[m
+[36m@@ -0,0 +1,138 @@[m
+[32m+[m[32mlet selectedValues: string[] = [];[m
+[32m+[m
+[32m+[m[32m// Définition de l'interface pour le callback[m
+[32m+[m[32mtype SelectionChangeCallback = (selectedValues: string[]) => void;[m
+[32m+[m
+[32m+[m[32m// Main function to initialize a dropdown[m
+[32m+[m[32mexport const initializeDropdown = ([m
+[32m+[m[32m  dropdownContainerSelector: string,[m
+[32m+[m[32m  values: string[],[m
+[32m+[m[32m  onSelectionChange: SelectionChangeCallback[m
+[32m+[m[32m): void => {[m
+[32m+[m[32m  const dropdownContainer = document.querySelector([m
+[32m+[m[32m    dropdownContainerSelector[m
+[32m+[m[32m  ) as HTMLElement | null;[m
+[32m+[m
+[32m+[m[32m  if (!dropdownContainer) {[m
+[32m+[m[32m    console.error([m
+[32m+[m[32m      "Dropdown container not found for selector:",[m
+[32m+[m[32m      dropdownContainerSelector[m
+[32m+[m[32m    );[m
+[32m+[m[32m    return;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  const dropdownElement = dropdownContainer.querySelector([m
+[32m+[m[32m    ".dropdown"[m
+[32m+[m[32m  ) as HTMLElement;[m
+[32m+[m[32m  const clearSearchElement = dropdownContainer.querySelector([m
+[32m+[m[32m    ".clear-search"[m
+[32m+[m[32m  ) as HTMLElement;[m
+[32m+[m[32m  const searchInputElement = dropdownContainer.querySelector([m
+[32m+[m[32m    ".search-tags"[m
+[32m+[m[32m  ) as HTMLInputElement;[m
+[32m+[m[32m  const allOptionsElement = dropdownContainer.querySelector([m
+[32m+[m[32m    ".all-options"[m
+[32m+[m[32m  ) as HTMLElement;[m
+[32m+[m[32m  const selectedOptionsElement = dropdownContainer.querySelector([m
+[32m+[m[32m    ".selected-options"[m
+[32m+[m[32m  ) as HTMLElement;[m
+[32m+[m[32m  const filterDisplayArea = document.querySelector([m
+[32m+[m[32m    "#filter-display-area"[m
+[32m+[m[32m  ) as HTMLElement;[m
+[32m+[m
+[32m+[m[32m  // Function to display dropdown items based on the values and selected values[m
+[32m+[m[32m  function displayDropdownItems(values: string[]): void {[m
+[32m+[m[32m    allOptionsElement.innerHTML = ""; // Clear existing options[m
+[32m+[m[32m    values.forEach((value) => {[m
+[32m+[m[32m      if (!selectedValues.includes(value)) {[m
+[32m+[m[32m        const optionElement = document.createElement("div");[m
+[32m+[m[32m        optionElement.classList.add("option");[m
+[32m+[m[32m        optionElement.textContent = value;[m
+[32m+[m
+[32m+[m[32m        optionElement.addEventListener("click", () => {[m
+[32m+[m[32m          if (!selectedValues.includes(value)) {[m
+[32m+[m[32m            selectedValues.push(value);[m
+[32m+[m[32m            console.log(selectedValues);[m
+[32m+[m[32m            addTag(value);[m
+[32m+[m[32m            displayDropdownItems(values);[m
+[32m+[m[32m            onSelectionChange(selectedValues);[m
+[32m+[m[32m          }[m
+[32m+[m[32m        });[m
+[32m+[m[32m        allOptionsElement.appendChild(optionElement);[m
+[32m+[m[32m      }[m
+[32m+[m[32m    });[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Display initial dropdown items[m
+[32m+[m[32m  displayDropdownItems(values);[m
+[32m+[m[32m  onSelectionChange(selectedValues);[m
+[32m+[m
+[32m+[m[32m  // Function to add a tag for a selected value[m
+[32m+[m[32m  function addTag(value: string): void {[m
+[32m+[m[32m    // Common function to create a tag element[m
+[32m+[m[32m    function createTagElement(tagValue: string): HTMLElement {[m
+[32m+[m[32m      const tagElement = document.createElement("span");[m
+[32m+[m[32m      tagElement.classList.add("tag");[m
+[32m+[m[32m      tagElement.setAttribute("data-value", tagValue); // Unique identifier[m
+[32m+[m[32m      tagElement.textContent = tagValue;[m
+[32m+[m
+[32m+[m[32m      const removeTagButton = document.createElement("span");[m
+[32m+[m[32m      removeTagButton.classList.add("remove-tag");[m
+[32m+[m[32m      removeTagButton.innerHTML = "&times;";[m
+[32m+[m[32m      tagElement.appendChild(removeTagButton);[m
+[32m+[m
+[32m+[m[32m      return tagElement;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    const tagElement = createTagElement(value);[m
+[32m+[m[32m    const tagClone = createTagElement(value); // Clone for the filter display area[m
+[32m+[m
+[32m+[m[32m    // Add event listener to the original tag's remove button[m
+[32m+[m[32m    tagElement.querySelector(".remove-tag")?.addEventListener("click", () => {[m
+[32m+[m[32m      removeTag(value);[m
+[32m+[m[32m    });[m
+[32m+[m
+[32m+[m[32m    // Add the same for the cloned tag[m
+[32m+[m[32m    tagClone.querySelector(".remove-tag")?.addEventListener("click", () => {[m
+[32m+[m[32m      removeTag(value);[m
+[32m+[m[32m    });[m
+[32m+[m
+[32m+[m[32m    selectedOptionsElement.appendChild(tagElement);[m
+[32m+[m[32m    filterDisplayArea.appendChild(tagClone);[m
+[32m+[m
+[32m+[m[32m    onSelectionChange(selectedValues);[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Function to remove a tag[m
+[32m+[m[32m  function removeTag(value: string): void {[m
+[32m+[m[32m    // Remove the tag from both areas based on the 'data-value' attribute[m
+[32m+[m[32m    document.querySelectorAll(`.tag[data-value="${value}"]`).forEach((tag) => {[m
+[32m+[m[32m      tag.parentNode?.removeChild(tag);[m
+[32m+[m[32m    });[m
+[32m+[m
+[32m+[m[32m    // Update selected filters[m
+[32m+[m[32m    selectedValues = selectedValues.filter((val) => val !== value);[m
+[32m+[m[32m    onSelectionChange(selectedValues);[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Event listener for the search input[m
+[32m+[m[32m  searchInputElement.addEventListener("input", () => {[m
+[32m+[m[32m    const searchTerm = searchInputElement.value.toLowerCase();[m
+[32m+[m[32m    const filteredValues = values.filter((value) =>[m
+[32m+[m[32m      value.toLowerCase().includes(searchTerm)[m
+[32m+[m[32m    );[m
+[32m+[m[32m    displayDropdownItems(filteredValues);[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  // Event listener for the clear search[m
+[32m+[m[32m  clearSearchElement.addEventListener("click", () => {[m
+[32m+[m[32m    searchInputElement.value = "";[m
+[32m+[m[32m    displayDropdownItems(values);[m
+[32m+[m[32m    searchInputElement.focus();[m
+[32m+[m[32m  });[m
+[32m+[m[32m  // Event listener for the dropdown toggle[m
+[32m+[m[32m  dropdownElement.addEventListener("click", (event) => {[m
+[32m+[m[32m    event.stopPropagation();[m
+[32m+[m[32m    dropdownContainer.classList.toggle("open");[m
+[32m+[m[32m  });[m
+[32m+[m[32m};[m
+[1mdiff --git a/src/components/dropdowns.ts b/src/components/dropdowns.ts[m
+[1mdeleted file mode 100644[m
+[1mindex 7392e8b..0000000[m
+[1m--- a/src/components/dropdowns.ts[m
+[1m+++ /dev/null[m
+[36m@@ -1,167 +0,0 @@[m
+[31m-type FilterType = 'ingredient' | 'appliance' | 'utensil';[m
+[31m-// Global object to store selected values for each filter type[m
+[31m-// Adjust the global object to use string[] instead of never[][m
+[31m-const selectedFilters: Record<FilterType, string[]> = {[m
+[31m-    ingredient: [],[m
+[31m-    appliance: [],[m
+[31m-    utensil: [][m
+[31m-};[m
+[31m-[m
+[31m-// Main function to initialize a dropdown[m
+[31m-export const initializeDropdown = (dropdownContainerSelector: string, values: string[], filterType: FilterType): void => {[m
+[31m-    const dropdownContainer = document.querySelector(dropdownContainerSelector) as HTMLElement | null;[m
+[31m-[m
+[31m-    if (!dropdownContainer) {[m
+[31m-        console.error("Dropdown container not found for selector:", dropdownContainerSelector);[m
+[31m-        return;[m
+[31m-    }[m
+[31m-[m
+[31m-    const dropdownElement = dropdownContainer.querySelector(".dropdown") as HTMLElement;[m
+[31m-    const clearSearchElement = dropdownContainer.querySelector(".clear-search") as HTMLElement;[m
+[31m-    const searchInputElement = dropdownContainer.querySelector(".search-tags") as HTMLInputElement;[m
+[31m-    const allOptionsElement = dropdownContainer.querySelector(".all-options") as HTMLElement;[m
+[31m-    const selectedOptionsElement = dropdownContainer.querySelector(".selected-options") as HTMLElement;[m
+[31m-    const filterDisplayArea = document.querySelector("#filter-display-area") as HTMLElement;[m
+[31m-    // Function to display dropdown items based on the values and selected values[m
+[31m-    function displayDropdownItems(values: string[]): void {[m
+[31m-        allOptionsElement.innerHTML = ""; // Clear existing options[m
+[31m-        values.forEach(value => {[m
+[31m-            if (!selectedFilters[filterType].includes(value)) {[m
+[31m-                const optionElement = document.createElement("div");[m
+[31m-                optionElement.classList.add("option");[m
+[31m-                optionElement.textContent = value;[m
+[31m-[m
+[31m-                optionElement.addEventListener("click", () => {[m
+[31m-                    if (!selectedFilters[filterType].includes(value)) {[m
+[31m-                        selectedFilters[filterType].push(value);[m
+[31m-                        console.log(selectedFilters);[m
+[31m-                        addTag(value, filterType);[m
+[31m-                        displayDropdownItems(values);[m
+[31m-                    }[m
+[31m-                });[m
+[31m-                allOptionsElement.appendChild(optionElement);[m
+[31m-            }[m
+[31m-        });[m
+[31m-    }[m
+[31m-[m
+[31m-    // Display initial dropdown items[m
+[31m-    displayDropdownItems(values);[m
+[31m-    filterCards();[m
+[31m-[m
+[31m-    // Event listener for the search input[m
+[31m-    searchInputElement.addEventListener("input", () => {[m
+[31m-        const searchTerm = searchInputElement.value.toLowerCase();[m
+[31m-        const filteredValues = values.filter(value => value.toLowerCase().includes(searchTerm));[m
+[31m-        displayDropdownItems(filteredValues);[m
+[31m-    });[m
+[31m-[m
+[31m-    // Event listener for the clear search[m
+[31m-    clearSearchElement.addEventListener("click", () => {[m
+[31m-        searchInputElement.value = "";[m
+[31m-        displayDropdownItems(values);[m
+[31m-        searchInputElement.focus();[m
+[31m-    });[m
+[31m-[m
+[31m-    // Event listener for the dropdown toggle[m
+[31m-    dropdownElement.addEventListener("click", (event) => {[m
+[31m-        event.stopPropagation();[m
+[31m-        dropdownContainer.classList.toggle("open");[m
+[31m-    });[m
+[31m-[m
+[31m-    // Function to add a tag for a selected value[m
+[31m-    function addTag(value: string, filterType: FilterType): void {[m
+[31m-        // Common function to create a tag element[m
+[31m-        function createTagElement(tagValue: string): HTMLElement {[m
+[31m-            const tagElement = document.createElement("span");[m
+[31m-            tagElement.classList.add("tag");[m
+[31m-            tagElement.setAttribute('data-value', tagValue); // Unique identifier[m
+[31m-            tagElement.textContent = tagValue;[m
+[31m-[m
+[31m-            const removeTagButton = document.createElement("span");[m
+[31m-            removeTagButton.classList.add("remove-tag");[m
+[31m-            removeTagButton.innerHTML = "&times;";[m
+[31m-            tagElement.appendChild(removeTagButton);[m
+[31m-[m
+[31m-            return tagElement;[m
+[31m-        }[m
+[31m-[m
+[31m-        const tagElement = createTagElement(value);[m
+[31m-        const tagClone = createTagElement(value); // Clone for the filter display area[m
+[31m-[m
+[31m-        // Add event listener to the original tag's remove button[m
+[31m-        tagElement.querySelector('.remove-tag')?.addEventListener('click', () => {[m
+[31m-            removeTag(value, filterType);[m
+[31m-        });[m
+[31m-[m
+[31m-        // Add the same for the cloned tag[m
+[31m-        tagClone.querySelector('.remove-tag')?.addEventListener('click', () => {[m
+[31m-            removeTag(value, filterType);[m
+[31m-        });[m
+[31m-[m
+[31m-        selectedOptionsElement.appendChild(tagElement);[m
+[31m-        filterDisplayArea.appendChild(tagClone);[m
+[31m-[m
+[31m-        filterCards();[m
+[31m-    };[m
+[31m-[m
+[31m-    // Simplified removeTag function[m
+[31m-    function removeTag(value: string, filterType: FilterType): void {[m
+[31m-        // Remove the tag from both areas based on the 'data-value' attribute[m
+[31m-        document.querySelectorAll(`.tag[data-value="${value}"]`).forEach(tag => {[m
+[31m-            tag.parentNode?.removeChild(tag);[m
+[31m-        });[m
+[31m-[m
+[31m-        // Update selected filters[m
+[31m-        selectedFilters[filterType] = selectedFilters[filterType].filter(val => val !== value);[m
+[31m-[m
+[31m-        // Re-display dropdown items and filter cards as needed[m
+[31m-        filterCards(); // Assuming this updates the display based on current filters[m
+[31m-    };[m
+[31m-[m
+[31m-    // Function to filter cards based on selected values across all filters[m
+[31m-    function filterCards(): void {[m
+[31m-        const cards = document.querySelectorAll('.card');[m
+[31m-        let matchCount = 0;[m
+[31m-        cards.forEach((card) => {[m
+[31m-            const htmlCard = card as HTMLElement[m
+[31m-            let isMatch = true;[m
+[31m-[m
+[31m-            // Check match for each filter type[m
+[31m-            for (const key in selectedFilters) {[m
+[31m-                // Assert that 'key' is a key of 'selectedFilters' and thus a FilterType[m
+[31m-                const filterType = key as FilterType;[m
+[31m-[m
+[31m-                const selectedValues = selectedFilters[filterType];[m
+[31m-                if (selectedValues.length > 0) {[m
+[31m-                    const dataSpans = htmlCard.querySelectorAll(`[data-${filterType}]`);[m
+[31m-                    const cardValues = Array.from(dataSpans).map(span => span.getAttribute(`data-${filterType}`)?.toLowerCase());[m
+[31m-[m
+[31m-                    // Card must match all selected values for current filter type[m
+[31m-[m
+[31m-                    // Directly inside your loop, without assuming filterType specifics[m
+[31m-                    isMatch = selectedFilters[filterType].every(selectedValue =>[m
+[31m-                        cardValues.some(cardValue =>[m
+[31m-                            cardValue?.includes(selectedValue.toLowerCase())[m
+[31m-                        ));[m
+[31m-[m
+[31m-                }[m
+[31m-            }[m
+[31m-[m
+[31m-            if (isMatch) {[m
+[31m-                htmlCard.style.display = '';[m
+[31m-                matchCount++; // Increment counter only for matched cards[m
+[31m-            } else {[m
+[31m-                htmlCard.style.display = 'none';[m
+[31m-            }[m
+[31m-[m
+[31m-        });[m
+[31m-        const cardsCountDisplay = document.querySelector('#card-count');[m
+[31m-        if (cardsCountDisplay) {[m
+[31m-            cardsCountDisplay.textContent = `${matchCount} RECETTES`;[m
+[31m-        }[m
+[31m-[m
+[31m-[m
+[31m-    };[m
+[31m-[m
+[31m-[m
+[31m-}[m
+\ No newline at end of file[m
+[1mdiff --git a/src/components/filterModule.ts b/src/components/filterModule.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..2a554af[m
+[1m--- /dev/null[m
+[1m+++ b/src/components/filterModule.ts[m
+[36m@@ -0,0 +1,19 @@[m
+[32m+[m[32mexport const filterRecipesBySelectedValues = (selectedValues: string[]): void => {[m
+[32m+[m[32m    const cards = document.querySelectorAll('.card');[m
+[32m+[m
+[32m+[m[32m    cards.forEach((card) => {[m
+[32m+[m[32m        const htmlCard = card as HTMLElement;[m
+[32m+[m[32m        let isMatch = selectedValues.length === 0; // Show all cards if no filter is selected[m
+[32m+[m
+[32m+[m[32m        if (selectedValues.length > 0) {[m
+[32m+[m[32m            const cardValues = Array.from(htmlCard.querySelectorAll('[data-value]'))[m
+[32m+[m[32m                .map(el => el.getAttribute('data-value')?.toLowerCase());[m
+[32m+[m
+[32m+[m[32m            isMatch = selectedValues.every(selectedValue =>[m
+[32m+[m[32m                cardValues.includes(selectedValue.toLowerCase())[m
+[32m+[m[32m            );[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        htmlCard.style.display = isMatch ? '' : 'none';[m
+[32m+[m[32m    });[m
+[32m+[m[32m};[m
+[1mdiff --git a/src/components/methodSearchByLoop.ts b/src/components/methodSearchByLoop.ts[m
+[1mnew file mode 100644[m
+[1mindex 0000000..6fc36d0[m
+[1m--- /dev/null[m
+[1m+++ b/src/components/methodSearchByLoop.ts[m
+[36m@@ -0,0 +1,71 @@[m
+[32m+[m[32mimport { updateMatchCountDisplay } from "./updateMatchCount";[m
+[32m+[m
+[32m+[m[32mexport function initSearchByLoop() {[m
+[32m+[m[32m  const searchInput = document.querySelector([m
+[32m+[m[32m    ".hero__search-input"[m
+[32m+[m[32m  ) as HTMLInputElement;[m
+[32m+[m[32m  const cards = document.querySelectorAll(".card");[m
+[32m+[m
+[32m+[m[32m  searchInput.addEventListener("input", () => {[m
+[32m+[m[32m    const searchTerm = searchInput.value;[m
+[32m+[m[32m    // Define the selectors for child elements to search within each card[m
+[32m+[m[32m    const selectors = [[m
+[32m+[m[32m      ".card__title",[m
+[32m+[m[32m      ".card__description",[m
+[32m+[m[32m      ".card__ingredient-name",[m
+[32m+[m[32m    ];[m[41m [m
+[32m+[m[32mif (searchTerm.length >= 3 ){[m
+[32m+[m[32m    filterCardsByTextContent([m
+[32m+[m[32m      searchTerm,[m
+[32m+[m[32m      cards as NodeListOf<HTMLElement>,[m
+[32m+[m[32m      selectors,[m
+[32m+[m[32m      updateMatchCountDisplay[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }else {[m
+[32m+[m[32m    // Clear the search results and update match count display[m
+[32m+[m[32m    resetSearchResults(cards as NodeListOf<HTMLElement>);[m
+[32m+[m[32m    updateMatchCountDisplay();[m
+[32m+[m[32m  }[m
+[32m+[m[32m  });[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mfunction filterCardsByTextContent([m
+[32m+[m[32m  input: string,[m
+[32m+[m[32m  cards: NodeListOf<HTMLElement>,[m
+[32m+[m[32m  selectors: string[],[m
+[32m+[m[32m  onUpdateMatchCountDisplay?: () => void[m
+[32m+[m[32m): void {[m
+[32m+[m[32m  input = input.toLowerCase().trim(); // Normalize the input for case-insensitive comparison[m
+[32m+[m
+[32m+[m[32m  for (let i = 0; i < cards.length; i++) {[m
+[32m+[m[32m    let isMatch = false; // Assume no match initially for the current card[m
+[32m+[m

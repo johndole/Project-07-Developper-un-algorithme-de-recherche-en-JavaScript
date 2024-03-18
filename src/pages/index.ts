@@ -9,7 +9,7 @@ import {
   getRecipeByAppliance,
 } from "../api/api";
 
-import { initSearchByLoop } from "../components/methodSearchByLoop";
+import { initSearchByObjArrayMethod } from "../components/methodSearchByObjArrayMethod";
 import { initializeDropdown } from "../components/dropdownModule";
 import { filterRecipesBySelectedValues } from "../components/filterModule";
 import { updateMatchCountDisplay } from "../components/updateMatchCount";
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   //Display the DOM
   displayData(recipes);
   //Initialize search
-  initSearchByLoop();
+  initSearchByObjArrayMethod()
 
   //Display dropdown
   // onSelectionChange par type de filtre (ingredients, ustensiles, appareils)
