@@ -11,7 +11,7 @@ import {
 
 import { initSearchByLoop } from "../components/methodSearchByLoop";
 import { initializeDropdown } from "../components/dropdownModule";
-import { filterRecipesBySelectedValues } from '../components/filterModule';
+import { filterRecipesBySelectedValues } from "../components/filterModule";
 import { updateMatchCountDisplay } from "../components/updateMatchCount";
 const recipeDomContainer = document.querySelector(".recipes__cards");
 
@@ -36,16 +36,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   //Display the DOM
   displayData(recipes);
-
   //Initialize search
   initSearchByLoop();
 
-
   //Display dropdown
+  // onSelectionChange par type de filtre (ingredients, ustensiles, appareils)
   initializeDropdown("#dropdown__ingredients", ingredients, onSelectionChange);
   initializeDropdown("#dropdown__ustensils", ustensils, onSelectionChange);
   initializeDropdown("#dropdown__appliances", appliances, onSelectionChange);
 });
+
 
 //Fonction de Rappel
 const onSelectionChange = (selectedValues: string[]) => {
