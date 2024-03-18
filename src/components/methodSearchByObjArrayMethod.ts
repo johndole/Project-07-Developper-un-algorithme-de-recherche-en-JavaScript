@@ -1,4 +1,6 @@
 
+import { updateMatchCountDisplay } from "./updateMatchCount";
+
 export function initSearchByObjArrayMethod(): void {
   const searchInput = document.querySelector('.hero__search-input') as HTMLInputElement | null;
   const cards = document.querySelectorAll('.card');
@@ -14,6 +16,7 @@ export function initSearchByObjArrayMethod(): void {
     const selectors = ['.card__title', '.card__description', '.card__ingredient-name'];
 
     filterCardsByTextContent(searchTerm, cards as NodeListOf<HTMLElement>, selectors);
+    updateMatchCountDisplay();
   });
 }
 
@@ -33,6 +36,7 @@ function filterCardsByTextContent(input: string, cards: NodeListOf<HTMLElement>,
 
     card.style.display = isMatch ? '' : 'none';
   });
+  updateMatchCountDisplay();
 }
 
 /*
