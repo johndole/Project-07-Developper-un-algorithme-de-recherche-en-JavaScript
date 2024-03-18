@@ -35,8 +35,9 @@ function filterCardsByTextContent(
   selectors: string[],
   onUpdateMatchCountDisplay?: () => void
 ): void {
-  let results = [];
   input = input.toLowerCase().trim(); // Normalize the input for case-insensitive comparison
+  
+  let results = [];
 
   for (let i = 0; i < cards.length; i++) {
     let isMatch = false; // Assume no match initially for the current card
