@@ -108,6 +108,10 @@ header {
 }
 
 /********************** ARTICLES or CARDS ***********************/
+.recipes__container {
+  text-align: center;
+  margin-bottom: 50px;
+}
 
 .recipes__cards {
   display: flex;

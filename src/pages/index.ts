@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   //Display the DOM
   displayData(recipes);
+  
   //Initialize search
   initSearchByLoop();
 

@@ -34,9 +34,9 @@ function filterCardsByTextContent(
   cards: NodeListOf<HTMLElement>,
   selectors: string[],
   onUpdateMatchCountDisplay?: () => void
-): void {
+  ): void {
   input = input.toLowerCase().trim(); // Normalize the input for case-insensitive comparison
-  
+
   let results = [];
 
   for (let i = 0; i < cards.length; i++) {
@@ -54,22 +54,24 @@ function filterCardsByTextContent(
       });
     }
   
-if (isMatch) {
-    results.push(cards[i]);
+    if (isMatch) {
+        results.push(cards[i]);
+        cards[i].style.display = "block";
+      }else{
+        cards[i].style.display = "none";
+    }
   }
-    // Show or hide the card based on the match result
-    cards[i].style.display = isMatch ? "" : "none";
-  }
-  // Call the callback function if provided
-  if (onUpdateMatchCountDisplay) {
-    onUpdateMatchCountDisplay();
-  }
+
+    // Call the callback function if provided
+    if (onUpdateMatchCountDisplay) {
+      onUpdateMatchCountDisplay();
+    }
 }
 
-function resetSearchResults(cards: NodeListOf<HTMLElement>): void {
-  // Reset the display of all cards to show them
-  cards.forEach((card) => {
-    card.style.display = "";
-  });
+    function resetSearchResults(cards: NodeListOf<HTMLElement>): void {
+      // Reset the display of all cards to show them
+      cards.forEach((card) => {
+        card.style.display = "block";
+      });
 }
 
